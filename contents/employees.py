@@ -1,19 +1,9 @@
 import streamlit as st
-import re
-from mongodb_connect.connect import connect_to_collection
-from pathlib import Path
 from contents.employee_data.basic_info import employee_profile_photo, employee_basic_info
 from contents.employee_data.personal_info import employee_personal_info
 from contents.employee_data.employment_info import employee_employment_info
 from contents.employee_data.salary_info import employee_salary_info
-
-def employee_data(employee_id, employee_status):
-    collection = connect_to_collection('employees')
-    return collection.find_one(
-        {
-            "employee_id":employee_id,
-            'status':employee_status
-        })
+from contents.employee_data.employee_document import get_employee_document
 
 def employees_dashboard():
 
@@ -42,11 +32,9 @@ def employees_dashboard():
         with cols[2]:
             if st.button(label='Search'):
                 employee_id = employee_id.strip().upper()
-                if re.fullmatch(r"EMP\d{3}", employee_id):
-                    st.session_state.employee_document = employee_data(employee_id, employee_status)
-                else:
-                    st.error("⚠️ Invalid employee id format. Format should be EMP001")
-                    st.session_state.employee_document = None
+                get_employee_document(
+                    employee_id=employee_id,
+                    employee_status=employee_status)
     
     if st.session_state.employee_document:
         # main document for employee
