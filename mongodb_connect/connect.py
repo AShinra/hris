@@ -26,3 +26,7 @@ def get_employment_info(employment_info_id):
 def get_salary_info(salary_info_id):
     collection = connect_to_collection('salary_info')
     return collection.find_one({'_id':salary_info_id})
+
+def get_government_benefit_info(government_benefit_id):
+    collection = connect_to_collection('benefits_government')
+    return collection.find_one({'_id':government_benefit_id})

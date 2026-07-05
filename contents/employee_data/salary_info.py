@@ -5,8 +5,9 @@ from mongodb_connect.connect import get_salary_info
 def employee_salary_info(employee_document):
 
     # get employee salary data
+    
     salary_data = get_salary_info(salary_info_id=employee_document['salary_info'])
-
+    
     row1 = st.columns([1,1,1,1,1])
 
     # basic salary details

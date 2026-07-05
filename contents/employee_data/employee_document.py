@@ -15,6 +15,8 @@ def get_employee_document(employee_id, employee_status):
 
     if re.fullmatch(r"EMP\d{3}", employee_id):
         st.session_state.employee_document = employee_data(employee_id, employee_status)
+        if st.session_state.employee_document is None:
+            st.toast("⚠️ Employee ID does not exist on record")
     else:
-        st.error("⚠️ Invalid employee id format. Format should be EMP001")
+        st.toast("⚠️ Invalid employee id format. Format should be EMP001 or emp001")
         st.session_state.employee_document = None
