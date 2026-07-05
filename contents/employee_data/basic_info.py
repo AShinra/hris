@@ -17,6 +17,9 @@ def employee_basic_info(employee_document):
 
     st.markdown('**Basic Information**')
 
+    for key in list(st.session_state.keys()):
+        del st.session_state[key]
+
     row1 = st.columns([1,1,1,1])
 
     # last name details

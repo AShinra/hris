@@ -60,11 +60,17 @@ def employees_dashboard():
 
             with tabs[0]:               
                 # personal info
-                employee_personal_info(employee_document=employee_document)
+                try:
+                    employee_personal_info(employee_document=employee_document)
+                except:
+                    st.info('Updating...')
 
             with tabs[1]:
                 # employment info
-                employee_employment_info(employee_document=employee_document)
+                try:
+                    employee_employment_info(employee_document=employee_document)
+                except:
+                    st.info('Updating...')
             
             with tabs[2]:                
                 # compensation data
@@ -83,7 +89,7 @@ def employees_dashboard():
                         st.info('Updating...')
                 
                 with tabs1[2]:
-                    ''''''
+                    st.info('Updating...')
                     
 
 
