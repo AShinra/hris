@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from streamlit_geolocation import streamlit_geolocation
+from geopy.geocoders import Nominatim
 
 
 # ---------------------------------------------------------------------------
@@ -63,22 +64,39 @@ def location_screen():
         st.success(f"Latitude: {latitude}")
         st.success(f"Longitude: {longitude}")
 
-        accuracy = location.get("accuracy")
-        if accuracy is not None:
-            st.caption(f"Accuracy: ±{accuracy:.0f} m")
+        geolocator = Nominatim(user_agent="hris_app")
 
-        st.map(pd.DataFrame({"lat": [latitude], "lon": [longitude]}))
+        location = geolocator.reverse(
+            (latitude, longitude),
+            language="en",
+            exactly_one=True)
+        
+        if location:
+            loc_data = {"address": location.address,
+            "latitude": location.latitude,
+            "longitude": location.longitude,
+            "raw": location.raw}
+            st.write(loc_data)
 
-        with st.expander("Raw location data"):
-            st.write(location)
-    else:
-        st.info("Waiting for location — click the icon above and allow access.")
 
-    st.divider()
-    if st.button("Log out"):
-        st.session_state.logged_in = False
-        st.session_state.username = ""
-        st.rerun()
+
+
+    #     accuracy = location.get("accuracy")
+    #     if accuracy is not None:
+    #         st.caption(f"Accuracy: ±{accuracy:.0f} m")
+
+    #     st.map(pd.DataFrame({"lat": [latitude], "lon": [longitude]}))
+
+    #     with st.expander("Raw location data"):
+    #         st.write(location)
+    # else:
+    #     st.info("Waiting for location — click the icon above and allow access.")
+
+    # st.divider()
+    # if st.button("Log out"):
+    #     st.session_state.logged_in = False
+    #     st.session_state.username = ""
+    #     st.rerun()
 
 
 # ---------------------------------------------------------------------------
@@ -87,10 +105,17 @@ def location_screen():
 def main():
     init_state()
 
-    if st.session_state.logged_in:
+    st.write(st.session_state.logged_in)
+
+    if st.session_state.logged_in==True:
         location_screen()
     else:
         login_screen()
+
+    # if st.session_state.logged_in:
+    #     location_screen()
+    # else:
+    #     login_screen()
 
 
 if __name__ == "__main__":
